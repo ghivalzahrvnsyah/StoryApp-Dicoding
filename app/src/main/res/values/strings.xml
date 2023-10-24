@@ -13,5 +13,14 @@
     <string name="message_main_page">Selamat Belajar di Dicoding.</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
+    <string name="alertMessage">Akun dengan  sudah jadi nih. Yuk, login dan belajar coding.</string>
+    <string name="continueMsg">Lanjut</string>
+    <string name="alertMsgLogin">Anda berhasil login. Sudah tidak sabar untuk belajar ya?</string>
+    <string name="name_hint">Masukkan Nama Anda disini</string>
+    <string name="errorMsgName">Nama tidak boleh kurang dari 3 karakter</string>
+    <string name="email_hint">Masukkan Email disini</string>
+    <string name="errorMsgEmail">Format email tidak benar</string>
+    <string name="password_hint">Masukkan Password disini</string>
+    <string name="errorMsgPassword">Password tidak boleh kurang dari 8 karakter</string>
 
 </resources>

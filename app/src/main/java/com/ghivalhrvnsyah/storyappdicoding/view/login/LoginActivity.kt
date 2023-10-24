@@ -2,20 +2,30 @@ package com.ghivalhrvnsyah.storyappdicoding.view.login
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.ghivalhrvnsyah.storyappdicoding.R
+import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityLoginBinding
+import com.ghivalhrvnsyah.storyappdicoding.response.ErrorResponse
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyButtonLogin
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditText
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditTextEmail
+import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,7 +33,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var myButtonLogin: MyButtonLogin
     private lateinit var myEditText: MyEditText
     private lateinit var myEditTextEmail: MyEditTextEmail
-
+    private val viewModel by viewModels<LoginViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +47,17 @@ class LoginActivity : AppCompatActivity() {
         myEditText = findViewById(R.id.passwordEditText)
 
         setButtonEnable()
+        myEditTextEmail.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                setButtonEnable()
+
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+
         myEditText.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
@@ -47,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
 
+
         setupView()
         setupAction()
         playAnimation()
@@ -54,7 +78,36 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setButtonEnable() {
         val result = myEditText.text
-        myButtonLogin.isEnabled = result != null && result.toString().isNotEmpty()
+        myButtonLogin.isEnabled = result != null && result.toString().isNotEmpty() && myEditTextEmail.text.toString().isNotEmpty()
+    }
+
+    private suspend fun login(email: String, password: String) {
+        try {
+            //get success message
+            val message  = viewModel.login(email, password)
+            showLoading(false)
+            showSuccesMessage()
+        } catch (e: HttpException) {
+            //get error message
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            showLoading(false)
+        }
+    }
+
+    private fun showSuccesMessage() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage(getString(R.string.alertMsgLogin))
+            setPositiveButton(getString(R.string.continueMsg)) { _, _ ->
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
+        }
     }
 
     private fun playAnimation() {
@@ -92,17 +145,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        val email = binding.emailEditText.text.toString()
         binding.loginButton.setOnClickListener {
-            AlertDialog.Builder(this).apply {
-                setTitle("Hai!")
-                setMessage("Selamat datang di Story App. $email !!!")
-                setPositiveButton("Mengerti") { _, _ -> }
-                create()
-                show()
+            val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
+
+            showLoading(true)
+            lifecycleScope.launch {
+                login(email, password)
             }
         }
-
     }
 
     private fun setupView() {
@@ -116,5 +167,14 @@ class LoginActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+    }
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.loginButton.visibility = View.GONE
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.loginButton.visibility = View.VISIBLE
+        }
     }
 }

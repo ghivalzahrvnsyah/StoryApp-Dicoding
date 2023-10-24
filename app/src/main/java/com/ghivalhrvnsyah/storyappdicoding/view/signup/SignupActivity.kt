@@ -2,26 +2,40 @@ package com.ghivalhrvnsyah.storyappdicoding.view.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.ghivalhrvnsyah.storyappdicoding.R
+import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivitySignupBinding
+import com.ghivalhrvnsyah.storyappdicoding.response.ErrorResponse
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyButtonSignup
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditText
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditTextEmail
+import com.ghivalhrvnsyah.storyappdicoding.view.login.LoginActivity
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var myButtonSignUp: MyButtonSignup
     private lateinit var myEditText: MyEditText
     private lateinit var myEditTextEmail: MyEditTextEmail
+    private val viewModel by viewModels<SignupViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,20 +80,57 @@ class SignupActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
     }
+    private suspend fun register(name: String, email: String, password:String) {
+        try {
+            //get success message
+            val message  = viewModel.register(name, email, password)
+            showLoading(false)
+            showSuccesMessage()
+        } catch (e: HttpException) {
+            //get error message
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            showLoading(false)
+
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.signupButton.visibility = View.GONE
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.signupButton.visibility = View.VISIBLE
+        }
+    }
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             val name = binding.edRegisterName.text.toString()
+            val email = binding.edRegisterEmail.text.toString()
+            val password = binding.edRegisterPassword.text.toString()
 
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $name  sudah jadi nih. Yuk, login dan belajar coding.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
-                }
-                create()
-                show()
+            showLoading(true)
+            lifecycleScope.launch {
+                register(name, email, password)
             }
+
+        }
+    }
+    private fun showSuccesMessage() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage(getString(R.string.alertMessage))
+            setPositiveButton(getString(R.string.continueMsg)) { _, _ ->
+                val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
         }
     }
 

@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.ghivalhrvnsyah.storyappdicoding.R
 
-class MyEditTextEmail : AppCompatEditText, View.OnTouchListener {
+class MyEditTextName : AppCompatEditText, View.OnTouchListener {
     private lateinit var clearButtonImage: Drawable
 
     constructor(context: Context) : super(context) {
@@ -35,7 +35,7 @@ class MyEditTextEmail : AppCompatEditText, View.OnTouchListener {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        hint = context.getString(R.string.email_hint)
+        hint = context.getString(R.string.name_hint)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
@@ -51,12 +51,11 @@ class MyEditTextEmail : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
-
-                    val email = s.toString()
-                    if (!isValidEmail(email)) {
-                        setError(context.getString(R.string.errorMsgEmail), null)
+                    if(s.toString().length < 3){
+                        setError(context.getString(R.string.errorMsgName), null)
                     } else {
                         error = null
+
                     }
                 } else {
                     hideClearButton()
@@ -134,8 +133,5 @@ class MyEditTextEmail : AppCompatEditText, View.OnTouchListener {
         )
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        return email.matches(emailPattern.toRegex())
-    }
+
 }
