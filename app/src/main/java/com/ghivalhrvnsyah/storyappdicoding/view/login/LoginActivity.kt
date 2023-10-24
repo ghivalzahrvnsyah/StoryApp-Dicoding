@@ -5,25 +5,56 @@ import android.animation.ObjectAnimator
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityLoginBinding
+import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyButtonLogin
+import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditText
+import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyEditTextEmail
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var myButtonLogin: MyButtonLogin
+    private lateinit var myEditText: MyEditText
+    private lateinit var myEditTextEmail: MyEditTextEmail
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        myButtonLogin = findViewById(R.id.loginButton)
+        myEditTextEmail = findViewById(R.id.emailEditText)
+        myEditText = findViewById(R.id.passwordEditText)
+
+        setButtonEnable()
+        myEditText.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                setButtonEnable()
+
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+
+
         setupView()
         setupAction()
         playAnimation()
+    }
+
+    private fun setButtonEnable() {
+        val result = myEditText.text
+        myButtonLogin.isEnabled = result != null && result.toString().isNotEmpty()
     }
 
     private fun playAnimation() {
