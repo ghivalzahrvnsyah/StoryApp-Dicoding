@@ -36,7 +36,7 @@ class MyButtonSignup: AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "DAFTAR" else "DAFTAR"
+        text = if(isEnabled) context.getString(R.string.signupBtnMsg) else context.getString(R.string.signupBtnMsg)
     }
 
     private fun init() {

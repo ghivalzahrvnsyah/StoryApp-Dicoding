@@ -36,7 +36,7 @@ class MyButtonLogin: AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "MASUK" else "MASUK"
+        text = if(isEnabled) context.getString(R.string.loginBtnMsg) else context.getString(R.string.loginBtnMsg)
     }
 
     private fun init() {
