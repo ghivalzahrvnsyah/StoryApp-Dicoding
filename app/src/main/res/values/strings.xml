@@ -24,5 +24,8 @@
     <string name="errorMsgPassword">Password cannot be less than 8 characters</string>
     <string name="loginBtnMsg">LOGIN</string>
     <string name="signupBtnMsg">REGISTER</string>
+    <string name="camera">camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
 
 </resources>

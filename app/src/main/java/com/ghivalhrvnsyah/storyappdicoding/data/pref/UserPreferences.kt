@@ -36,6 +36,11 @@ class UserPreferences private  constructor(private val dataStore: DataStore<Pref
             preferences.clear()
         }
     }
+    suspend fun getToken(): String {
+        return dataStore.data.map { preferences ->
+            preferences[TOKEN_KEY] ?: ""
+        }.toString()
+    }
     companion object {
         @Volatile
         private var INSTANCE: UserPreferences? = null
