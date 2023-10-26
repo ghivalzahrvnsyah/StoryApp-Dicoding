@@ -8,6 +8,7 @@ import com.ghivalhrvnsyah.storyappdicoding.di.Injection
 import com.ghivalhrvnsyah.storyappdicoding.view.login.LoginViewModel
 import com.ghivalhrvnsyah.storyappdicoding.view.main.MainViewModel
 import com.ghivalhrvnsyah.storyappdicoding.view.signup.SignupViewModel
+import com.ghivalhrvnsyah.storyappdicoding.view.welcome.WelcomeViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -44,6 +45,10 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
                 }
             }
             return INSTANCE as ViewModelFactory
+        }
+        fun resetInstance() {
+            INSTANCE = null
+            Injection.resetInstance()
         }
     }
 }

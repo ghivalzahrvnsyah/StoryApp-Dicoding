@@ -90,6 +90,7 @@ class LoginActivity : AppCompatActivity() {
                UserModel(email, message.loginResult?.token!!)
             )
             showLoading(false)
+            ViewModelFactory.resetInstance()
             showSuccesMessage()
         } catch (e: HttpException) {
             //get error message

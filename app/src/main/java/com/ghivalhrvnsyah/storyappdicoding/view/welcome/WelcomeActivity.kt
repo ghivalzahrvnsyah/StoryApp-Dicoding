@@ -1,4 +1,4 @@
-package com.ghivalhrvnsyah.storyappdicoding
+package com.ghivalhrvnsyah.storyappdicoding.view.welcome
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
+import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityWelcomeBinding
 import com.ghivalhrvnsyah.storyappdicoding.view.login.LoginActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity

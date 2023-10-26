@@ -28,4 +28,9 @@
     <string name="camera">camera</string>
     <string name="gallery">Gallery</string>
     <string name="upload">Unggah</string>
+    <string name="hint">Text Deskripsi</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="alertLogoutMsg">Keluar</string>
+    <string name="alertConfirmLogout">Apakah Anda yakin ingin keluar?</string>
+
 </resources>

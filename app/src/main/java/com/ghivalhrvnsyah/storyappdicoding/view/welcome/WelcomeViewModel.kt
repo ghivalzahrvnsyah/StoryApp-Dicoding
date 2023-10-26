@@ -1,4 +1,4 @@
-package com.ghivalhrvnsyah.storyappdicoding
+package com.ghivalhrvnsyah.storyappdicoding.view.welcome
 
 import androidx.lifecycle.ViewModel
 import com.ghivalhrvnsyah.storyappdicoding.data.UserRepository

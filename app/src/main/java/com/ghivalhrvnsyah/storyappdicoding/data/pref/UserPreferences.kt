@@ -57,4 +57,15 @@ class UserPreferences private  constructor(private val dataStore: DataStore<Pref
             }
         }
     }
+    private val THEME_KEY = booleanPreferencesKey("theme_setting")
+
+    fun getThemeSetting() = dataStore.data.map { preferences ->
+        preferences[THEME_KEY] ?: false
+    }
+
+    suspend fun saveThemeSetting(isDarkModeActive: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[THEME_KEY] = isDarkModeActive
+        }
+    }
 }
