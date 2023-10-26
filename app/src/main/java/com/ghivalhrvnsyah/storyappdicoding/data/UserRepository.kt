@@ -4,13 +4,14 @@ import com.ghivalhrvnsyah.storyappdicoding.api.ApiConfig
 import com.ghivalhrvnsyah.storyappdicoding.api.ApiService
 import com.ghivalhrvnsyah.storyappdicoding.data.model.UserModel
 import com.ghivalhrvnsyah.storyappdicoding.data.pref.UserPreferences
+import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
 import com.ghivalhrvnsyah.storyappdicoding.response.LoginResponse
 import com.ghivalhrvnsyah.storyappdicoding.response.RegisterResponse
+import com.ghivalhrvnsyah.storyappdicoding.response.StoryResponse
 import kotlinx.coroutines.flow.Flow
 
-class UserRepository private constructor(private val userPref: UserPreferences) {
+class UserRepository private constructor(private val apiService: ApiService, private val userPref: UserPreferences) {
 
-    private val apiService = ApiConfig.getApiService()
 
     suspend fun saveSession(user: UserModel) {
         userPref.saveSession(user)
@@ -30,12 +31,17 @@ class UserRepository private constructor(private val userPref: UserPreferences) 
         return apiService.login(email, password)
     }
 
+    suspend fun getStories(): List<ListStoryItem?>? {
+        return apiService.getStories().listStory
+    }
+
     companion object {
         @Volatile
         private var instance: UserRepository? = null
-        fun getInstance(userPref: UserPreferences): UserRepository =
+        fun getInstance(apiService: ApiService,userPref: UserPreferences): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPref)
+                instance ?: UserRepository(apiService, userPref)
+
             }.also { instance = it }
     }
 }

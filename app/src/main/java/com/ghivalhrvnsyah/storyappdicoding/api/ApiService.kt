@@ -27,10 +27,7 @@ interface ApiService {
         @Field("password") password: String
     ): LoginResponse
 
-    @GET("/stories")
+    @GET("stories")
     suspend fun getStories(
-        @Query("page") page: Int?,
-        @Query("size") size: Int?,
-        @Query("location") location: Int?
     ):StoryResponse
 }

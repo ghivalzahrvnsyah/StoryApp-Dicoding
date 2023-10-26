@@ -23,8 +23,8 @@
     <string name="errorMsgEmail">Format email tidak benar</string>
     <string name="password_hint">Masukkan Password disini</string>
     <string name="errorMsgPassword">Password tidak boleh kurang dari 8 karakter</string>
-    <string name="loginBtnMsg">LOGIN</string>
-    <string name="signupBtnMsg">REGISTER</string>
+    <string name="loginBtnMsg">MASUK</string>
+    <string name="signupBtnMsg">DAFTAR</string>
     <string name="camera">camera</string>
     <string name="gallery">Gallery</string>
     <string name="upload">Unggah</string>

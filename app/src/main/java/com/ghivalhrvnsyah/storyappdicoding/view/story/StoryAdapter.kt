@@ -11,11 +11,14 @@ import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
 class StoryAdapter: RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 
     private lateinit var binding: ItemStoryBinding
-    private var listStory: List<ListStoryItem> = emptyList()
+    private var listStory = ArrayList<ListStoryItem>()
 
-    fun setStories() {
-        listStory = emptyList()
+    fun setStories(newListStory: ArrayList<ListStoryItem>) {
+
+        listStory.clear()
+        listStory.addAll(newListStory)
         notifyDataSetChanged()
+
     }
 
     override fun onCreateViewHolder(

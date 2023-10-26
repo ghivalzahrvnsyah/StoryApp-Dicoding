@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
+import com.ghivalhrvnsyah.storyappdicoding.data.model.UserModel
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityLoginBinding
 import com.ghivalhrvnsyah.storyappdicoding.response.ErrorResponse
 import com.ghivalhrvnsyah.storyappdicoding.view.customView.MyButtonLogin
@@ -85,6 +86,9 @@ class LoginActivity : AppCompatActivity() {
         try {
             //get success message
             val message  = viewModel.login(email, password)
+            viewModel.saveUser(
+               UserModel(email, message.loginResult?.token!!)
+            )
             showLoading(false)
             showSuccesMessage()
         } catch (e: HttpException) {
@@ -148,7 +152,6 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-
             showLoading(true)
             lifecycleScope.launch {
                 login(email, password)

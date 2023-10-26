@@ -9,21 +9,32 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityWelcomeBinding
 import com.ghivalhrvnsyah.storyappdicoding.view.login.LoginActivity
+import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.signup.SignupActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
+    private val viewModel by viewModels<WelcomeViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         setupView()
         setupAction()
         playAnimation()
+
+        if (viewModel.getSession().isLogin) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     private fun playAnimation() {
