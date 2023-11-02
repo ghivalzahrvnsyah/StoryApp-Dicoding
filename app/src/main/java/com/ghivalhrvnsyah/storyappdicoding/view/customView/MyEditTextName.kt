@@ -13,15 +13,14 @@ import androidx.core.content.ContextCompat
 import com.ghivalhrvnsyah.storyappdicoding.R
 
 class MyEditTextName : AppCompatEditText, View.OnTouchListener {
+
     private lateinit var clearButtonImage: Drawable
 
     constructor(context: Context) : super(context) {
-
         init()
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-
         init()
     }
 
@@ -35,7 +34,7 @@ class MyEditTextName : AppCompatEditText, View.OnTouchListener {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        hint = context.getString(R.string.name_hint)
+        hint = context.getString(R.string.name_hint) // Menggunakan string resource untuk hint
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
@@ -45,17 +44,20 @@ class MyEditTextName : AppCompatEditText, View.OnTouchListener {
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
+                // Tidak perlu melakukan apa pun sebelum teks berubah.
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().isNotEmpty()) {
+                if (s.isNotEmpty()) {
                     showClearButton()
-                    if (s.toString().length < 3) {
-                        setError(context.getString(R.string.errorMsgName), null)
+
+                    if (s.length < 3) {
+                        setError(
+                            context.getString(R.string.errorMsgName),
+                            null
+                        ) // Menggunakan string resource untuk pesan kesalahan
                     } else {
                         error = null
-
                     }
                 } else {
                     hideClearButton()
@@ -63,9 +65,8 @@ class MyEditTextName : AppCompatEditText, View.OnTouchListener {
             }
 
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
+                // Tidak perlu melakukan apa pun setelah teks berubah.
             }
-
         })
     }
 
@@ -132,6 +133,4 @@ class MyEditTextName : AppCompatEditText, View.OnTouchListener {
             bottomOfTheText
         )
     }
-
-
 }

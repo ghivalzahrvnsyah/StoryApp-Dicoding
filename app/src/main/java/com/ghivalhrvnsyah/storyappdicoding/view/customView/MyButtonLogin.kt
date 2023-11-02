@@ -16,12 +16,10 @@ class MyButtonLogin : AppCompatButton {
     private var txtColor: Int = 0
 
     constructor(context: Context) : super(context) {
-
         init()
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-
         init()
     }
 
@@ -30,26 +28,21 @@ class MyButtonLogin : AppCompatButton {
         attrs,
         defStyleAttr
     ) {
-
         init()
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        background = if (isEnabled) enableBackground else disableBackground
-
-
+        setBackgroundDrawable(if (isEnabled) enableBackground else disableBackground)
         setTextColor(txtColor)
-        textSize = 12f
+        textSize = resources.getDimension(R.dimen.button_text_size) // Menggantikan angka tetap dengan dimensi
         gravity = Gravity.CENTER
-        text =
-            if (isEnabled) context.getString(R.string.loginBtnMsg) else context.getString(R.string.loginBtnMsg)
+        text = context.getString(R.string.loginBtnMsg) // Menggunakan string resource
     }
 
     private fun init() {
         txtColor = ContextCompat.getColor(context, android.R.color.background_light)
         enableBackground = ContextCompat.getDrawable(context, R.drawable.bg_button) as Drawable
-        disableBackground =
-            ContextCompat.getDrawable(context, R.drawable.bg_button_disable) as Drawable
+        disableBackground = ContextCompat.getDrawable(context, R.drawable.bg_button_disable) as Drawable
     }
 }

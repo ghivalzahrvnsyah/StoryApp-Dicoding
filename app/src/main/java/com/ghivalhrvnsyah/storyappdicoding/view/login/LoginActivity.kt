@@ -3,13 +3,10 @@ package com.ghivalhrvnsyah.storyappdicoding.view.login
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +23,7 @@ import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -42,18 +40,29 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
+        initializeViews()
+        setupTextWatchers()
+        setupAction()
+        playEntranceAnimation()
+    }
+
+    private fun initializeViews() {
         myButtonLogin = findViewById(R.id.loginButton)
         myEditTextEmail = findViewById(R.id.emailEditText)
         myEditText = findViewById(R.id.passwordEditText)
 
         setButtonEnable()
+    }
+
+    private fun setupTextWatchers() {
         myEditTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
-
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -66,18 +75,11 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
-
             }
 
             override fun afterTextChanged(s: Editable) {
             }
         })
-
-
-
-        setupView()
-        setupAction()
-        playAnimation()
     }
 
     private fun setButtonEnable() {
@@ -89,69 +91,98 @@ class LoginActivity : AppCompatActivity() {
 
     private suspend fun login(email: String, password: String) {
         try {
-            //get success message
             val message = viewModel.login(email, password)
-            viewModel.saveUser(
-                UserModel(email, message.loginResult?.token!!)
-            )
+            if (message.loginResult != null) {
+                message.loginResult.token?.let { UserModel(email, it) }
+                    ?.let { viewModel.saveUser(it) }
+                showLoading(false)
+                ViewModelFactory.resetInstance()
+                showSuccessMessage()
+            } else {
+                showErrorAlert(getString(R.string.loginErrorAllert))
+                showLoading(false)
+            }
+        } catch (e: IOException) {
+            showErrorAlert(getString(R.string.loginInternetError))
             showLoading(false)
-            ViewModelFactory.resetInstance()
-            showSuccesMessage()
         } catch (e: HttpException) {
-            //get error message
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            showLoading(false)
+            handleApiError(e)
         }
     }
 
-    private fun showSuccesMessage() {
+    private fun showSuccessMessage() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
             setMessage(getString(R.string.alertMsgLogin))
             setPositiveButton(getString(R.string.continueMsg)) { _, _ ->
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                navigateToMainActivity()
             }
             create()
             show()
         }
     }
 
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
+    private fun handleApiError(e: HttpException) {
+        val jsonInString = e.response()?.errorBody()?.string()
+        val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+        val errorMessage = errorBody.message
+        showLoading(false)
+    }
 
-        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
-        val message =
+    private fun showErrorAlert(message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle("Error")
+            setMessage(message)
+            setPositiveButton("OK") { _, _ -> }
+            create()
+            show()
+        }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun playEntranceAnimation() {
+        val imageViewAnimator =
+            ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f)
+                .apply {
+                    duration = 6000
+                    repeatCount = ObjectAnimator.INFINITE
+                    repeatMode = ObjectAnimator.REVERSE
+                }
+
+        val titleAnimator =
+            ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
+        val messageAnimator =
             ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
-        val emailTextView =
+        val emailTextViewAnimator =
             ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
-        val emailEditTextLayout =
+        val emailEditTextLayoutAnimator =
             ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val passwordTextView =
+        val passwordTextViewAnimator =
             ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
-        val passwordEditTextLayout =
+        val passwordEditTextLayoutAnimator =
             ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
+        val loginButtonAnimator =
+            ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
 
         AnimatorSet().apply {
             playSequentially(
-                title,
-                message,
-                emailTextView,
-                emailEditTextLayout,
-                passwordTextView,
-                passwordEditTextLayout,
-                login
+                titleAnimator,
+                messageAnimator,
+                emailTextViewAnimator,
+                emailEditTextLayoutAnimator,
+                passwordTextViewAnimator,
+                passwordEditTextLayoutAnimator,
+                loginButtonAnimator
             )
             startDelay = 100
         }.start()
+
+        imageViewAnimator.start()
     }
 
     private fun setupAction() {
@@ -163,19 +194,6 @@ class LoginActivity : AppCompatActivity() {
                 login(email, password)
             }
         }
-    }
-
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
     }
 
     private fun showLoading(state: Boolean) {

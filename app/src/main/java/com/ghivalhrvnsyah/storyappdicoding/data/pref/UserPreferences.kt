@@ -40,11 +40,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    suspend fun getToken(): String {
-        return dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY] ?: ""
-        }.toString()
-    }
+
 
     companion object {
         @Volatile
@@ -63,15 +59,5 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    private val THEME_KEY = booleanPreferencesKey("theme_setting")
 
-    fun getThemeSetting() = dataStore.data.map { preferences ->
-        preferences[THEME_KEY] ?: false
-    }
-
-    suspend fun saveThemeSetting(isDarkModeActive: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[THEME_KEY] = isDarkModeActive
-        }
-    }
 }

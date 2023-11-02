@@ -16,7 +16,8 @@ class StoryPagingResource(private val apiService: ApiService) : PagingSource<Int
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListStoryItem> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            val responseData = apiService.getStories(position, params.loadSize).listStory ?: emptyList()
+            val responseData =
+                apiService.getStories(position, params.loadSize).listStory
             LoadResult.Page(
                 data = responseData,
                 prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
@@ -27,7 +28,8 @@ class StoryPagingResource(private val apiService: ApiService) : PagingSource<Int
         }
     }
 
-    private companion object {
+    companion object {
+
         const val INITIAL_PAGE_INDEX = 1
     }
 }

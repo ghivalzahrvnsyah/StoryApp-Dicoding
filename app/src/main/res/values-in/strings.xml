@@ -38,5 +38,7 @@
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
     <string name="retry">Coba lagi</string>
+    <string name="loginErrorAllert">Login gagal. Silakan coba lagi!.</string>
+    <string name="loginInternetError">Tidak ada Koneksi Internet. Silakan periksa internet Anda.</string>
 
 </resources>

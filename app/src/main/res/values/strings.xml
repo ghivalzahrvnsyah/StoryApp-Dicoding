@@ -37,5 +37,7 @@
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
     <string name="retry">Try Again!</string>
+    <string name="loginErrorAllert">Login failed. Please Try Again.</string>
+    <string name="loginInternetError">No internet connection. Please check your network settings.</string>
 
 </resources>

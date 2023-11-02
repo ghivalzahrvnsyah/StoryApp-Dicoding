@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ghivalhrvnsyah.storyappdicoding.data.UserRepository
-import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
 import com.ghivalhrvnsyah.storyappdicoding.response.StoryResponse
 import kotlinx.coroutines.launch
 

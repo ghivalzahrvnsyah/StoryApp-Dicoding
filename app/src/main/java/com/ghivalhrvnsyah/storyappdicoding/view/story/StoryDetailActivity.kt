@@ -19,14 +19,12 @@ class StoryDetailActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
+        // Mengambil data tambahan dari intent
         val title = intent.getStringExtra(EXTRA_TITLE)
-        val id = intent.getIntExtra(EXTRA_ID, 0)
         val url = intent.getStringExtra(EXTRA_URL)
         val description = intent.getStringExtra(EXTRA_DESCRIPTION)
-        val bundle = Bundle().apply {
-            putString(EXTRA_TITLE, title)
-        }
 
+        // Menampilkan data pada tampilan
         with(binding) {
             Glide.with(this@StoryDetailActivity)
                 .load(url)
@@ -34,6 +32,8 @@ class StoryDetailActivity : AppCompatActivity() {
             tvNameDetail.text = title
             tvDescriptionDetail.text = description
         }
+
+        // Menambahkan fungsi untuk tombol kembali
         binding.ivBackBtn.setOnClickListener {
             onBackPressed()
         }
@@ -41,9 +41,7 @@ class StoryDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TITLE = "extra_title"
-        const val EXTRA_ID = "extra_id"
         const val EXTRA_URL = "extra_url"
         const val EXTRA_DESCRIPTION = "extra_description"
-
     }
 }

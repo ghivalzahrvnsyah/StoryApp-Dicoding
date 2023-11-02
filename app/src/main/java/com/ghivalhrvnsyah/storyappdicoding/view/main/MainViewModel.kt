@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ghivalhrvnsyah.storyappdicoding.data.UserRepository
-import com.ghivalhrvnsyah.storyappdicoding.data.pref.UserPreferences
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
 import kotlinx.coroutines.launch
 import java.io.File

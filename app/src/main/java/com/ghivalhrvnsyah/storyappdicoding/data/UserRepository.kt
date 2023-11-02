@@ -54,11 +54,11 @@ class UserRepository private constructor(
         return apiService.login(email, password)
     }
 
-    suspend fun getStories(): List<ListStoryItem?>? {
+    suspend fun getStories(): List<ListStoryItem?> {
         return apiService.getStories().listStory
     }
 
-    fun getStoryPager() : LiveData<PagingData<ListStoryItem>> {
+    fun getStoryPager(): LiveData<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
@@ -67,7 +67,8 @@ class UserRepository private constructor(
                 StoryPagingResource(apiService)
             }
         ).liveData
-}
+    }
+
     fun uploadImage(imageFile: File, description: String) = liveData {
         emit(ResultState.Loading)
         val requestBody = description.toRequestBody("text/plain".toMediaType())

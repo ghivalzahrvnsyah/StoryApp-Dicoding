@@ -41,36 +41,41 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Inisialisasi komponen tampilan
         myButtonSignUp = findViewById(R.id.signupButton)
         myEditTextEmail = findViewById(R.id.ed_register_email)
         myEditText = findViewById(R.id.ed_register_password)
 
+        // Mengatur status awal tombol signup
         setButtonEnable()
+
+        // Menambahkan TextWatcher untuk memantau perubahan pada EditText
         myEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
-
             }
 
             override fun afterTextChanged(s: Editable) {
             }
         })
+
+        // Mengatur tampilan dan menjalankan animasi
         setupView()
         setupAction()
         playAnimation()
     }
 
+    // Mengatur status enable/disable tombol signup
     private fun setButtonEnable() {
         val result = myEditText.text
         myButtonSignUp.isEnabled = result != null && result.toString().isNotEmpty()
-
     }
 
+    // Mengatur tampilan, termasuk menyembunyikan status bar
     private fun setupView() {
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -82,22 +87,23 @@ class SignupActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    // Melakukan proses registrasi
     private suspend fun register(name: String, email: String, password: String) {
         try {
-            //get success message
+            // Memanggil ViewModel untuk melakukan registrasi
             val message = viewModel.register(name, email, password)
             showLoading(false)
-            showSuccesMessage()
+            showSuccessMessage()
         } catch (e: HttpException) {
-            //get error message
+            // Menangani kesalahan jika registrasi gagal
             val jsonInString = e.response()?.errorBody()?.string()
             val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
             val errorMessage = errorBody.message
             showLoading(false)
-
         }
     }
 
+    // Menampilkan atau menyembunyikan indikator loading
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.progressBar.visibility = View.VISIBLE
@@ -108,25 +114,28 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
+    // Mengatur tindakan saat tombol signup ditekan
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             val name = binding.edRegisterName.text.toString()
             val email = binding.edRegisterEmail.text.toString()
             val password = binding.edRegisterPassword.text.toString()
 
+            // Menampilkan indikator loading dan melakukan registrasi
             showLoading(true)
             lifecycleScope.launch {
                 register(name, email, password)
             }
-
         }
     }
 
-    private fun showSuccesMessage() {
+    // Menampilkan pesan sukses setelah registrasi berhasil
+    private fun showSuccessMessage() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
             setMessage(getString(R.string.alertMessage))
             setPositiveButton(getString(R.string.continueMsg)) { _, _ ->
+                // Navigasi ke halaman login setelah registrasi berhasil
                 val intent = Intent(this@SignupActivity, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
@@ -137,6 +146,7 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
+    // Menjalankan animasi
     private fun playAnimation() {
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
@@ -158,7 +168,6 @@ class SignupActivity : AppCompatActivity() {
         val passwordEditTextLayout =
             ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
         val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
-
 
         AnimatorSet().apply {
             playSequentially(
