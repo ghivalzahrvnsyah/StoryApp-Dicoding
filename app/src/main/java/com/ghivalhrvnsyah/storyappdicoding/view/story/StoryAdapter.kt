@@ -1,23 +1,29 @@
 package com.ghivalhrvnsyah.storyappdicoding.view.story
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.util.Pair
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ItemStoryBinding
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
+import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity
 
-class StoryAdapter: RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
+class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 
     private lateinit var binding: ItemStoryBinding
     private var listStory = ArrayList<ListStoryItem>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
+
     fun setStories(newListStory: ArrayList<ListStoryItem>) {
         listStory.clear()
         listStory.addAll(newListStory)
@@ -40,10 +46,11 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     override fun getItemCount(): Int = listStory.size
 
 
-    inner class StoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(story: ListStoryItem) {
             binding.root.setOnClickListener {
                 onItemClickCallback?.onItemClicked(story)
+
             }
             with(binding) {
                 Glide.with(itemView.context)
@@ -52,9 +59,11 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
                     .into(imgView)
                 tvName.text = story.name
                 tvDescription.text = story.description
+
             }
         }
     }
+
     interface OnItemClickCallback {
         fun onItemClicked(data: ListStoryItem)
     }

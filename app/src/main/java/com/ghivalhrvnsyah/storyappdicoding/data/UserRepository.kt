@@ -73,6 +73,7 @@ class UserRepository private constructor(
 
     }
 
+
     fun getThemeSettings() = settingPref.getThemeSetting()
     suspend fun saveThemeSetting(checked: Boolean) {
         settingPref.saveThemeSetting(checked)

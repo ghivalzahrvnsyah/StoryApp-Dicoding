@@ -19,6 +19,7 @@
             android:id="@+id/imgView"
             android:layout_width="match_parent"
             android:layout_height="135dp"
+            android:transitionName="image"
             tools:src="@tools:sample/avatars"
             android:layout_margin="8dp"/>
         <com.google.android.material.divider.MaterialDivider
@@ -28,6 +29,7 @@
         <TextView
             android:id="@+id/tvName"
             style="@style/textNameStyle"
+            android:transitionName="name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Dicoding"/>
@@ -35,6 +37,7 @@
             android:id="@+id/tvDescription"
             style="@style/textDescStyle"
             android:maxLines="1"
+            android:transitionName="desc"
             android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

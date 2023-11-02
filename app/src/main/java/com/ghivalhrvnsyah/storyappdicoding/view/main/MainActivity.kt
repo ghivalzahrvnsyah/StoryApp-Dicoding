@@ -22,6 +22,7 @@ import com.ghivalhrvnsyah.storyappdicoding.data.pref.dataStoreSetting
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityMainBinding
 import com.ghivalhrvnsyah.storyappdicoding.response.ErrorResponse
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
+import com.ghivalhrvnsyah.storyappdicoding.view.maps.MapsActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryAdapter
 import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryDetailActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryUploadActivity
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        getSupportActionBar()?.hide();
 
         storyAdapter = StoryAdapter()
 
@@ -87,6 +90,10 @@ class MainActivity : AppCompatActivity() {
                     dialog.cancel()
                 }
                 .show()
+        }
+        binding.ivMaps.setOnClickListener {
+            val intent = Intent(this@MainActivity, MapsActivity::class.java)
+            startActivity(intent)
         }
         binding.fabAddStory.setOnClickListener {
             navigateToStoryUpload()

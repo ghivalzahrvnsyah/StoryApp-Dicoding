@@ -16,6 +16,7 @@ class StoryDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupUI()
+        getSupportActionBar()?.hide();
     }
 
 private fun setupUI() {
