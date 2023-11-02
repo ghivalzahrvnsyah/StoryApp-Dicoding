@@ -12,18 +12,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
-class UserPreferences private  constructor(private val dataStore: DataStore<Preferences>){
+
+class UserPreferences private constructor(private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
-            preferences[EMAIL_KEY]  = user.email
+            preferences[EMAIL_KEY] = user.email
             preferences[TOKEN_KEY] = user.token
             preferences[IS_LOGIN_KEY] = true
 
         }
     }
-    fun getSession() : Flow<UserModel> {
-        return dataStore.data.map {preferences ->
+
+    fun getSession(): Flow<UserModel> {
+        return dataStore.data.map { preferences ->
             UserModel(
                 preferences[EMAIL_KEY] ?: "",
                 preferences[TOKEN_KEY] ?: "",
@@ -31,16 +33,19 @@ class UserPreferences private  constructor(private val dataStore: DataStore<Pref
             )
         }
     }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
         }
     }
+
     suspend fun getToken(): String {
         return dataStore.data.map { preferences ->
             preferences[TOKEN_KEY] ?: ""
         }.toString()
     }
+
     companion object {
         @Volatile
         private var INSTANCE: UserPreferences? = null
@@ -50,13 +55,14 @@ class UserPreferences private  constructor(private val dataStore: DataStore<Pref
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreferences {
-            return INSTANCE ?: synchronized(this){
+            return INSTANCE ?: synchronized(this) {
                 val instance = UserPreferences(dataStore)
                 INSTANCE = instance
                 instance
             }
         }
     }
+
     private val THEME_KEY = booleanPreferencesKey("theme_setting")
 
     fun getThemeSetting() = dataStore.data.map { preferences ->

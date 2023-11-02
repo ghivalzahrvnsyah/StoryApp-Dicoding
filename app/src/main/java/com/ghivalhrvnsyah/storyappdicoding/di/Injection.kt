@@ -18,6 +18,7 @@ object Injection {
         val apiService = ApiConfig.getApiService(user.token)
         return UserRepository.getInstance(apiService, pref, prefSetting)
     }
+
     fun resetInstance() {
         UserRepository.refreshRepository()
     }

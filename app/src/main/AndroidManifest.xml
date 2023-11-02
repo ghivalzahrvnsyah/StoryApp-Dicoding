@@ -36,7 +36,8 @@
         <activity
             android:name=".view.maps.MapsActivity"
             android:exported="false"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".view.main.MainActivity"/>
         <activity
             android:name=".view.story.StoryUploadActivity"
             android:exported="false" />

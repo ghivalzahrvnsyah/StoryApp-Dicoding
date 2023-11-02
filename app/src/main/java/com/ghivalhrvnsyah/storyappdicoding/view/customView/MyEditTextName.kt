@@ -51,7 +51,7 @@ class MyEditTextName : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
-                    if(s.toString().length < 3){
+                    if (s.toString().length < 3) {
                         setError(context.getString(R.string.errorMsgName), null)
                     } else {
                         error = null

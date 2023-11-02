@@ -2,25 +2,17 @@ package com.ghivalhrvnsyah.storyappdicoding.view.main
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
-import com.ghivalhrvnsyah.storyappdicoding.data.pref.SettingPreferences
-import com.ghivalhrvnsyah.storyappdicoding.data.pref.dataStore
-import com.ghivalhrvnsyah.storyappdicoding.data.pref.dataStoreSetting
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ActivityMainBinding
-import com.ghivalhrvnsyah.storyappdicoding.response.ErrorResponse
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
 import com.ghivalhrvnsyah.storyappdicoding.view.maps.MapsActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryAdapter
@@ -28,9 +20,6 @@ import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryDetailActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.story.StoryUploadActivity
 import com.ghivalhrvnsyah.storyappdicoding.view.welcome.WelcomeActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getSupportActionBar()?.hide();
+        supportActionBar?.hide()
 
         storyAdapter = StoryAdapter()
 
@@ -67,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.saveThemeSetting(isChecked)
         }
         viewModel.isLoading.observe(this) { isLoading ->
-           binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
 
@@ -103,17 +92,19 @@ class MainActivity : AppCompatActivity() {
                 storyAdapter.setStories(stories as ArrayList<ListStoryItem>)
             }
         }
-        storyAdapter.setOnItemClickCallback(object: StoryAdapter.OnItemClickCallback{
+        storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
                 navigateToStoryDetail(data.name, data.photoUrl, data.description)
             }
         })
     }
-    private fun navigateToStoryUpload(){
+
+    private fun navigateToStoryUpload() {
         val intent = Intent(this@MainActivity, StoryUploadActivity::class.java)
         startActivity(intent)
         finish()
     }
+
     private fun navigateToStoryDetail(name: String?, url: String?, desc: String?) {
         val intent = Intent(this@MainActivity, StoryDetailActivity::class.java).apply {
             putExtra(StoryDetailActivity.EXTRA_TITLE, name)

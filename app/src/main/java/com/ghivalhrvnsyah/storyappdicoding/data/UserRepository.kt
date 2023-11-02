@@ -1,7 +1,6 @@
 package com.ghivalhrvnsyah.storyappdicoding.data
 
 import androidx.lifecycle.liveData
-import com.ghivalhrvnsyah.storyappdicoding.api.ApiConfig
 import com.ghivalhrvnsyah.storyappdicoding.api.ApiService
 import com.ghivalhrvnsyah.storyappdicoding.data.model.UserModel
 import com.ghivalhrvnsyah.storyappdicoding.data.pref.SettingPreferences
@@ -73,14 +72,15 @@ class UserRepository private constructor(
 
     }
 
-
     fun getThemeSettings() = settingPref.getThemeSetting()
     suspend fun saveThemeSetting(checked: Boolean) {
         settingPref.saveThemeSetting(checked)
     }
 
+    suspend fun getMarkerStories(): StoryResponse {
+        return apiService.getStoriesWithLocation()
 
-
+    }
 
     companion object {
         @Volatile

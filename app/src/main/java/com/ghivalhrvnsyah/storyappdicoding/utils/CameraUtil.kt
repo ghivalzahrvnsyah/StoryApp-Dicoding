@@ -50,7 +50,6 @@ private fun getImageUriForPreQ(context: Context): Uri {
         "com.ghivalhrvnsyah.storyappdicoding.fileprovider",
         imageFile
     )
-    //content://com.dicoding.picodiploma.mycamera.fileprovider/my_images/MyCamera/20230825_133659.jpg
 }
 
 fun createCustomTempFile(context: Context): File {

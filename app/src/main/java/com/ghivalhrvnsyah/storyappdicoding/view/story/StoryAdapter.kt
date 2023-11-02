@@ -1,18 +1,12 @@
 package com.ghivalhrvnsyah.storyappdicoding.view.story
 
-import android.app.Activity
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.util.Pair
-import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ghivalhrvnsyah.storyappdicoding.databinding.ItemStoryBinding
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
-import com.ghivalhrvnsyah.storyappdicoding.view.main.MainActivity
 
 class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 

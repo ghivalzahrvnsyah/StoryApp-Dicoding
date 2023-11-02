@@ -24,9 +24,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
     init {
         getStories()
     }
+
     fun uploadImage(file: File, description: String) = repository.uploadImage(file, description)
 
-   fun getStories(): List<ListStoryItem?>? {
+    fun getStories(): List<ListStoryItem?>? {
         viewModelScope.launch {
             try {
                 _isLoading.postValue(true)
@@ -39,7 +40,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
             }
         }
         return null
-   }
+    }
 
     fun logout() {
         viewModelScope.launch {

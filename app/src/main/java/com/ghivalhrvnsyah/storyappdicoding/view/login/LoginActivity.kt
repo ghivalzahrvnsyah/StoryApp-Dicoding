@@ -4,16 +4,15 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
@@ -48,24 +47,28 @@ class LoginActivity : AppCompatActivity() {
         myEditText = findViewById(R.id.passwordEditText)
 
         setButtonEnable()
-        myEditTextEmail.addTextChangedListener(object: TextWatcher{
+        myEditTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
 
             }
+
             override fun afterTextChanged(s: Editable) {
             }
         })
 
-        myEditText.addTextChangedListener(object: TextWatcher{
+        myEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
 
             }
+
             override fun afterTextChanged(s: Editable) {
             }
         })
@@ -79,15 +82,17 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setButtonEnable() {
         val result = myEditText.text
-        myButtonLogin.isEnabled = result != null && result.toString().isNotEmpty() && myEditTextEmail.text.toString().isNotEmpty()
+        myButtonLogin.isEnabled =
+            result != null && result.toString().isNotEmpty() && myEditTextEmail.text.toString()
+                .isNotEmpty()
     }
 
     private suspend fun login(email: String, password: String) {
         try {
             //get success message
-            val message  = viewModel.login(email, password)
+            val message = viewModel.login(email, password)
             viewModel.saveUser(
-               UserModel(email, message.loginResult?.token!!)
+                UserModel(email, message.loginResult?.token!!)
             )
             showLoading(false)
             ViewModelFactory.resetInstance()
@@ -172,6 +177,7 @@ class LoginActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
     }
+
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.progressBar.visibility = View.VISIBLE

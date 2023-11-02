@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
@@ -30,6 +30,7 @@ class StoryUploadActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     private fun allPermissionsGranted() =
         ContextCompat.checkSelfPermission(
             this,
@@ -41,12 +42,14 @@ class StoryUploadActivity : AppCompatActivity() {
         binding = ActivityStoryUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.uploadButton.setOnClickListener { uploadImage() }
 
         binding.ivBackBtn.setOnClickListener {
-           intent = Intent(this, MainActivity::class.java)
+            intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -116,6 +119,7 @@ class StoryUploadActivity : AppCompatActivity() {
             }
         } ?: showToast(getString(R.string.empty_image_warning))
     }
+
     private fun navigateToStoryList() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -126,6 +130,7 @@ class StoryUploadActivity : AppCompatActivity() {
         super.onResume()
         viewModel.getStories()
     }
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }

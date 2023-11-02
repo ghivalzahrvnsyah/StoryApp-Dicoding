@@ -6,10 +6,8 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
 import com.ghivalhrvnsyah.storyappdicoding.R
 
 class MyEditText : AppCompatEditText {

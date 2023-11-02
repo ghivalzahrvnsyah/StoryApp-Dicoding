@@ -4,16 +4,15 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.ghivalhrvnsyah.storyappdicoding.R
 import com.ghivalhrvnsyah.storyappdicoding.ViewModelFactory
@@ -47,13 +46,15 @@ class SignupActivity : AppCompatActivity() {
         myEditText = findViewById(R.id.ed_register_password)
 
         setButtonEnable()
-        myEditText.addTextChangedListener(object: TextWatcher {
+        myEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 setButtonEnable()
 
             }
+
             override fun afterTextChanged(s: Editable) {
             }
         })
@@ -80,10 +81,11 @@ class SignupActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
     }
-    private suspend fun register(name: String, email: String, password:String) {
+
+    private suspend fun register(name: String, email: String, password: String) {
         try {
             //get success message
-            val message  = viewModel.register(name, email, password)
+            val message = viewModel.register(name, email, password)
             showLoading(false)
             showSuccesMessage()
         } catch (e: HttpException) {
@@ -119,6 +121,7 @@ class SignupActivity : AppCompatActivity() {
 
         }
     }
+
     private fun showSuccesMessage() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
