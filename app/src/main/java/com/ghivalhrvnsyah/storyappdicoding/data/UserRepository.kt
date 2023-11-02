@@ -1,6 +1,12 @@
 package com.ghivalhrvnsyah.storyappdicoding.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.ghivalhrvnsyah.storyappdicoding.StoryPagingResource
 import com.ghivalhrvnsyah.storyappdicoding.api.ApiService
 import com.ghivalhrvnsyah.storyappdicoding.data.model.UserModel
 import com.ghivalhrvnsyah.storyappdicoding.data.pref.SettingPreferences
@@ -52,6 +58,16 @@ class UserRepository private constructor(
         return apiService.getStories().listStory
     }
 
+    fun getStoryPager() : LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingResource(apiService)
+            }
+        ).liveData
+}
     fun uploadImage(imageFile: File, description: String) = liveData {
         emit(ResultState.Loading)
         val requestBody = description.toRequestBody("text/plain".toMediaType())

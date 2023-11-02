@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.ghivalhrvnsyah.storyappdicoding.data.UserRepository
 import com.ghivalhrvnsyah.storyappdicoding.data.pref.UserPreferences
 import com.ghivalhrvnsyah.storyappdicoding.response.ListStoryItem
@@ -19,6 +21,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+
+    val storyPage: LiveData<PagingData<ListStoryItem>> =
+        repository.getStoryPager().cachedIn(viewModelScope)
 
 
     init {
@@ -56,3 +62,5 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 }
+
+

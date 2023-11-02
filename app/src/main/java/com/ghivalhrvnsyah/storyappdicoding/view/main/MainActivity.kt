@@ -92,12 +92,15 @@ class MainActivity : AppCompatActivity() {
                 storyAdapter.setStories(stories as ArrayList<ListStoryItem>)
             }
         }
+
+
         storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
                 navigateToStoryDetail(data.name, data.photoUrl, data.description)
             }
         })
     }
+
 
     private fun navigateToStoryUpload() {
         val intent = Intent(this@MainActivity, StoryUploadActivity::class.java)
@@ -114,10 +117,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getStories()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.getStories()
+//    }
 
 
 }

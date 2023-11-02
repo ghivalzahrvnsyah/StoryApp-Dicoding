@@ -126,10 +126,10 @@ class StoryUploadActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getStories()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.getStories()
+//    }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
