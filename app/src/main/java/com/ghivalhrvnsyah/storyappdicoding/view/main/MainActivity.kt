@@ -104,6 +104,10 @@ class MainActivity : AppCompatActivity() {
                 View.GONE
             }
         }
+        binding.swipeToRefresh.setOnRefreshListener {
+            storyAdapter.refresh()
+            binding.swipeToRefresh.isRefreshing = false
+        }
 
     }
 
