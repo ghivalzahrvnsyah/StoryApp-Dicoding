@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             rvListStory.layoutManager = LinearLayoutManager(this@MainActivity)
             rvListStory.adapter = storyAdapter
 
+
         }
         binding.ivLogout.setOnClickListener {
             AlertDialog.Builder(this)
@@ -87,11 +88,15 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddStory.setOnClickListener {
             navigateToStoryUpload()
         }
-        viewModel.stories.observe(this) { stories ->
-            if (stories != null) {
-                storyAdapter.setStories(stories as ArrayList<ListStoryItem>)
-            }
-        }
+//        viewModel.stories.observe(this) { stories ->
+//            if (stories != null) {
+//                storyAdapter.setStories(stories as ArrayList<ListStoryItem>)
+//            }
+//        }
+        viewModel.storyPage.observe(this, {
+            storyAdapter.submitData(lifecycle, it)
+        })
+
 
 
         storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
